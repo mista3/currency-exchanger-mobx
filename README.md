@@ -1,2 +1,2 @@
 # currency-exchanger-mobx
-to run use ```npm run dev```
+to start use ```npm run dev```
