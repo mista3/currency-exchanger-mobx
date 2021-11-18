@@ -1,0 +1,41 @@
+.inputPanel {
+  display: flex;
+  flex-direction: column;
+
+  .first {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .buttonLabel {
+      align-items: center;
+      h1 {
+        margin-block: auto;
+        font-size: 80px;
+        font-family: roboto;
+        text-transform: uppercase;
+        transition: font-size 300ms ease-in-out;
+      }
+    }
+
+    @media screen and (max-width: 825px) {
+      .buttonLabel {
+        h1 {
+          font-size: 25px;
+        }
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      .buttonLabel {
+        h1 {
+          font-size: 0px;
+        }
+      }
+    }
+  }
+
+  .second {
+    align-items: center;
+  }
+}
