@@ -1,4 +1,3 @@
-//test
 import axios from "axios";
 import { action, makeAutoObservable } from "mobx";
 
