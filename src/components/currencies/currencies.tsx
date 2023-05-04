@@ -1,5 +1,6 @@
-import { LinearProgress, Typography, Box, Paper, Theme } from "@mui/material";
-import { observer } from "mobx-react";
+import { LinearProgress, Typography, Box, Paper } from "@mui/material";
+import { Theme } from "@mui/material/styles";
+import { observer } from "mobx-react-lite";
 import { currencyStore } from "../../store/currencyStore";
 
 const Currencies = observer(({ theme }: { theme: Theme }) => (
@@ -24,10 +25,10 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
       style={{ padding: theme.spacing(1), display: "flex", flexWrap: "wrap" }}
     >
       {currencyStore.exchangedCurrencies
-        .filter((value) => {
-          return currencyStore.currencyFilter.includes(value[0]);
+        .filter(({code}) => {
+          return currencyStore.currencyFilter.includes(code);
         })
-        .map((code, index) => {
+        .map(({code, value}, index) => {
           return (
             <Paper
               key={index}
@@ -39,9 +40,9 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
               }}
             >
               <Typography sx={{ fontSize: 40 }}>
-                {(code[1] * currencyStore.amount).toFixed(2)}
+                {(value * currencyStore.amount).toFixed(2)}
               </Typography>
-              <Typography sx={{ fontSize: 20 }}>{code[0]}</Typography>
+              <Typography sx={{ fontSize: 20 }}>{code}</Typography>
             </Paper>
           );
         })}

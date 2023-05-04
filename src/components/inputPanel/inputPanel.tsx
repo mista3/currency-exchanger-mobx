@@ -1,7 +1,8 @@
 import "./inputPanel.scss";
 import { useEffect, useState } from "react";
 import currencyCodes from "../../data/currencyCodes.json";
-import { Autocomplete, TextField, Stack, Button, Theme } from "@mui/material";
+import { Autocomplete, TextField, Stack, Button } from "@mui/material";
+import { Theme } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
@@ -9,7 +10,7 @@ import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import ClearAllRoundedIcon from "@mui/icons-material/ClearAllRounded";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { currencyStore } from "../../store/currencyStore";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 
 const InputPanel = observer(({ theme }: { theme: Theme }) => {
   const [baseCurrency, setBaseCurrency] = useState(() => {
@@ -59,7 +60,7 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
 
         <Stack direction="row">
           <Autocomplete
-            onChange={(event, value) => {
+            onChange={(_, value) => {
               currencyStore.fetchCurrencies(value);
               setBaseCurrency(value);
             }}
@@ -136,7 +137,7 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
               color="error"
             />
           )}
-          onChange={(event, value) => {
+          onChange={(_, value) => {
             setFilter(value);
             currencyStore.setCurrencyFilter(
               value.length ? value : currencyCodesWithoutBase

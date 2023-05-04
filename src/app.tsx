@@ -4,7 +4,7 @@ import { darkTheme, lightTheme } from "./design/themes";
 import Currencies from "./components/currencies/currencies";
 import InputPanel from "./components/inputPanel/inputPanel";
 import { currencyStore } from "./store/currencyStore";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 
 const App = observer(() => {
   const theme = currencyStore.isDarkMode ? darkTheme : lightTheme;
@@ -29,13 +29,3 @@ const App = observer(() => {
 });
 
 export default App;
-
-//✔TODO: Make background color conected to theme using mui styled
-//✔TODO: Reorgonize components
-//✔TODO: Configure spacing
-//✔TODO: Stylize input components
-//✔TODO: Make scrollbar change with theme
-//✔TODO: Add title
-//✔TODO: fix status
-//✔TODO: change reset filter icon
-//✔TODO: add reload icon
