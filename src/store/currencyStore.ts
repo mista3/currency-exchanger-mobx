@@ -22,6 +22,15 @@ class CurrencyStore {
 
   toggleMode() {
     this.isDarkMode = !this.isDarkMode;
+    const favicon = document.getElementById("favicon");
+    if (favicon) {
+      favicon.setAttribute(
+        "href",
+        this.isDarkMode ?
+          "favicon-dark.svg" :
+          "favicon-light.svg"
+      ); 
+    }
   }
 
   async fetchCurrencies(baseCode: string) {
