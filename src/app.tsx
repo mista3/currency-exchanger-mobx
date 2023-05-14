@@ -6,6 +6,7 @@ import InputPanel from "./components/inputPanel/inputPanel";
 import { currencyStore } from "./store/currencyStore";
 import { observer } from "mobx-react-lite";
 
+
 const App = observer(() => {
   const theme = currencyStore.isDarkMode ? darkTheme : lightTheme;
 
