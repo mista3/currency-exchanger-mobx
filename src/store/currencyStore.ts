@@ -37,9 +37,9 @@ class CurrencyStore {
     this.exchangedCurrencies = [];
     this.status = "pending";
     try {
-      const res = await ky.get(`https://api.currencyapi.com/v3/latest?apikey=56f8e570-2e43-11ec-bfde-632279073c09&base_currency=${baseCode}`)      
-      const json = await res.json<{ data: { [key: string]: { code:string, value: number}}}>();
-      this.exchangedCurrencies = Object.values(json.data);
+      const res = await ky.get(`${import.meta.env.PROD?'mistominapi.ru':'http://localhost:3001'}/currencyexchanger/currencies?base=${baseCode}`)      
+      const json = await res.json<{ code: string, value: number }[]>();
+      this.exchangedCurrencies = json;
       this.status = "done";
     } catch {
       this.status = "error";

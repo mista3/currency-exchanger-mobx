@@ -28,10 +28,10 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
         .filter(({code}) => {
           return currencyStore.currencyFilter.includes(code);
         })
-        .map(({code, value}, index) => {
+        .map(({code, value}) => {
           return (
             <Paper
-              key={index}
+              key={code}
               sx={{
                 backgroundColor: theme.palette.primary.light,
                 margin: theme.spacing(1),
@@ -40,7 +40,7 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
               }}
             >
               <Typography sx={{ fontSize: 40 }}>
-                {(value * currencyStore.amount).toFixed(2)}
+                {Math.round(value * currencyStore.amount*1000)/1000}
               </Typography>
               <Typography sx={{ fontSize: 20 }}>{code}</Typography>
             </Paper>
