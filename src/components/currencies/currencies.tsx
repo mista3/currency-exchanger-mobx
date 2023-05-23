@@ -20,10 +20,7 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
           </Typography>
         </Box>
       ))}
-    <div
-      className="currencies"
-      style={{ padding: theme.spacing(1), display: "flex", flexWrap: "wrap" }}
-    >
+    <div style={{ padding: theme.spacing(1), display: "flex", flexWrap: "wrap", marginBottom: 64 }}>
       {currencyStore.exchangedCurrencies
         .filter(({code}) => {
           return currencyStore.currencyFilter.includes(code);

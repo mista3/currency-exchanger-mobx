@@ -93,7 +93,7 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
             color="error"
             type="number"
             label="Amount"
-            defaultValue={1}
+            value={currencyStore.amountInput}
             onWheel={(e) => {
               if (e.target instanceof HTMLElement) e.target.blur();
             }}
@@ -103,7 +103,7 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
             InputProps={{
               inputProps: { min: 0 },
             }}
-            onChange={(e) => currencyStore.setAmount(Number(e.target.value))}
+            onChange={(e) => currencyStore.setAmountInput(e.target.value)}
             sx={{ margin: theme.spacing(1), minWidth: "100px" }}
           />
         </Stack>
