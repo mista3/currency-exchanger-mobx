@@ -1,26 +1,21 @@
-import "./app.scss";
+import { observer } from "mobx-react-lite";
 import { Paper, ThemeProvider } from "@mui/material";
 import { darkTheme, lightTheme } from "./design/themes";
-import Currencies from "./components/currencies/currencies";
-import InputPanel from "./components/inputPanel/inputPanel";
-import { currencyStore } from "./store/currencyStore";
-import { observer } from "mobx-react-lite";
+import {Currencies, InputPanel} from "./components";
+import { store } from "./store";
+
+import "./app.scss";
 
 
 const App = observer(() => {
-  const theme = currencyStore.isDarkMode ? darkTheme : lightTheme;
+  const theme = store.isDarkMode ? darkTheme : lightTheme;
 
   return (
     <ThemeProvider theme={theme}>
       <Paper
-        sx={{
-          backgroundColor: theme.palette.primary.main,
-          height: "100vh",
-          borderRadius: 0,
-        }}
-        className={`${
-          currencyStore.isDarkMode ? "dark" : "light"
-        }-scrollbar app`}
+        className={`app ${store.isDarkMode ? "dark" : "light"}-scrollbar`}
+        sx={{backgroundColor: theme.palette.primary.main}}
+        square
       >
         <InputPanel theme={theme} />
         <Currencies theme={theme} />

@@ -15,23 +15,26 @@ html {
 
 .app {
   overflow-y: auto;
+  height: 100vh;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
 }
 
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
+
 .dark-scrollbar {
   &::-webkit-scrollbar-thumb {
     background-color: #4f5b62;
-    border-radius: 10px;
   }
 }
 
 .light-scrollbar {
   &::-webkit-scrollbar-thumb {
     background-color: #babdbe;
-    border-radius: 10px;
   }
 }
 

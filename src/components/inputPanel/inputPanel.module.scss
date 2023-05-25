@@ -1,13 +1,14 @@
-.inputPanel {
+.input_panel {
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   .first {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .buttonLabel {
+    .button_label {
       align-items: center;
       h1 {
         margin-block: auto;
@@ -19,7 +20,7 @@
     }
 
     @media screen and (max-width: 825px) {
-      .buttonLabel {
+      .button_label {
         h1 {
           font-size: 25px;
         }
@@ -27,7 +28,7 @@
     }
 
     @media screen and (max-width: 400px) {
-      .buttonLabel {
+      .button_label {
         h1 {
           font-size: 0px;
         }
@@ -36,6 +37,6 @@
   }
 
   .second {
-    align-items: center;
+    align-items: start;
   }
 }

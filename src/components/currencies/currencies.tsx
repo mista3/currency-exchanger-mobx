@@ -1,11 +1,26 @@
-import { LinearProgress, Typography, Box, Paper } from "@mui/material";
+import { LinearProgress, Typography, Box, Paper, Tooltip, tooltipClasses, TooltipProps } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import { Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
-import { currencyStore } from "../../store/currencyStore";
+import { store } from "../../store";
 
-const Currencies = observer(({ theme }: { theme: Theme }) => (
+const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.white,
+  },
+}));
+
+export const Currencies = observer(({ theme }: { theme: Theme }) => (
   <div>
-    {(currencyStore.status == "pending" && (
+    {(store.status == "pending" && (
       <Box sx={{ width: "100%", paddingInline: theme.spacing(2) }}>
         <LinearProgress
           color="secondary"
@@ -13,7 +28,7 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
         />
       </Box>
     )) ||
-      (currencyStore.status == "error" && (
+      (store.status == "error" && (
         <Box sx={{ width: "100%" }}>
           <Typography sx={{ fontSize: 20 }} color="error" align="center">
             Unable to load data. Please wait a moment and try again.
@@ -21,10 +36,12 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
         </Box>
       ))}
     <div style={{ padding: theme.spacing(1), display: "flex", flexWrap: "wrap", marginBottom: 64 }}>
-      {currencyStore.exchangedCurrencies
-        .filter(({code}) => {
-          return currencyStore.currencyFilter.includes(code);
-        })
+      {store.exchanged
+        .filter(({ code }) =>
+          !store.filter.length ||
+          !store.showFiltered ||
+          store.filter.includes(code)
+        )
         .map(({code, value}) => {
           return (
             <Paper
@@ -36,9 +53,11 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
                 padding: theme.spacing(2),
               }}
             >
+              <LightTooltip title={value} placement='top' arrow>
               <Typography sx={{ fontSize: 40 }}>
-                {Math.round(value * currencyStore.amount*1000)/1000}
+                {Math.round(value * store.amount * 100) / 100}
               </Typography>
+              </LightTooltip>
               <Typography sx={{ fontSize: 20 }}>{code}</Typography>
             </Paper>
           );
@@ -46,5 +65,3 @@ const Currencies = observer(({ theme }: { theme: Theme }) => (
     </div>
   </div>
 ));
-
-export default Currencies;

@@ -1,6 +1,4 @@
-import "./inputPanel.scss";
-import { useEffect, useState } from "react";
-import currencyCodes from "../../data/currencyCodes.json";
+import { observer } from "mobx-react-lite";
 import { Autocomplete, TextField, Stack, Button } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import { Box } from "@mui/system";
@@ -9,46 +7,32 @@ import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import ClearAllRoundedIcon from "@mui/icons-material/ClearAllRounded";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
-import { currencyStore } from "../../store/currencyStore";
-import { observer } from "mobx-react-lite";
+import { store } from "../../store";
 
-const InputPanel = observer(({ theme }: { theme: Theme }) => {
-  const [baseCurrency, setBaseCurrency] = useState(() => {
-    return "USD";
-  });
+import s from "./inputPanel.module.scss";
+import { l } from '../../language';
 
-  const [filter, setFilter] = useState(() => {
-    return Array<string>();
-  });
-
-  const currencyCodesWithoutBase = currencyCodes.filter((code) => {
-    return code != baseCurrency;
-  });
-
-  useEffect(() => {
-    currencyStore.fetchCurrencies(baseCurrency);
-    currencyStore.setCurrencyFilter(currencyCodesWithoutBase);
-  }, []);
+export const InputPanel = observer(({ theme }: { theme: Theme }) => {
 
   return (
     <div
-      className="inputPanel"
-      style={{ padding: theme.spacing(1), width: "100%" }}
+      className={s.input_panel}
+      style={{ padding: theme.spacing(1) }}
     >
       <Stack
         direction="row"
-        className="first"
+        className={s.first}
         sx={{ marginBottom: theme.spacing(2) }}
       >
-        <Stack direction="row" className="buttonLabel">
+        <Stack direction="row" className={s.button_label}>
           <Button
             title="Switch Theme"
-            onClick={() => currencyStore.toggleMode()}
+            onClick={() => store.toggleMode()}
             color="secondary"
             variant="contained"
-            sx={{ margin: theme.spacing(1) }}
+            sx={{ margin: theme.spacing(1), height: 56 }}
           >
-            {currencyStore.isDarkMode ? (
+            {store.isDarkMode ? (
               <LightModeRoundedIcon fontSize="large" />
             ) : (
               <DarkModeRoundedIcon fontSize="large" />
@@ -60,19 +44,19 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
 
         <Stack direction="row">
           <Autocomplete
+            value={store.base}
             onChange={(_, value) => {
-              currencyStore.fetchCurrencies(value);
-              setBaseCurrency(value);
+              store.setBase(value);
+              localStorage.setItem('base', value);
             }}
             autoComplete
             disableClearable
             disablePortal
-            defaultValue={baseCurrency}
             id="combo-box-demo"
-            options={currencyCodes}
+            options={store.currencyCodes}
             classes={{
               listbox: `${
-                currencyStore.isDarkMode ? "dark" : "light"
+                store.isDarkMode ? "dark" : "light"
               }-scrollbar`,
             }}
             sx={{ minWidth: 110, color: "primary", margin: theme.spacing(1) }}
@@ -80,20 +64,20 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
               <Box
                 {...params}
                 className={`${
-                  currencyStore.isDarkMode ? "dark" : "light"
+                  store.isDarkMode ? "dark" : "light"
                 }-scrollbar`}
               />
             )}
             renderInput={(params) => (
-              <TextField {...params} label="Base Currency" color="error" />
+              <TextField {...params} label={l[store.lang].base} color="error" />
             )}
           />
 
           <TextField
             color="error"
             type="number"
-            label="Amount"
-            value={currencyStore.amountInput}
+            label={l[store.lang].amount}
+            value={store.amountInput}
             onWheel={(e) => {
               if (e.target instanceof HTMLElement) e.target.blur();
             }}
@@ -103,19 +87,31 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
             InputProps={{
               inputProps: { min: 0 },
             }}
-            onChange={(e) => currencyStore.setAmountInput(e.target.value)}
+            onChange={(e) => {
+              store.setAmountInput(e.target.value)
+              localStorage.setItem('amount', e.target.value);
+            }}
             sx={{ margin: theme.spacing(1), minWidth: "100px" }}
           />
+          <Button
+            title="Switch Theme"
+            onClick={() => store.toggleLanguage()}
+            color="secondary"
+            variant="contained"
+            sx={{ margin: theme.spacing(1), height: 56 }}
+          >
+            {store.lang}
+          </Button>
         </Stack>
       </Stack>
 
-      <Stack direction="row" className="second">
+      <Stack direction="row" className={s.second}>
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => currencyStore.fetchCurrencies(baseCurrency)}
+          onClick={() => store.fetchCurrencies()}
           title="Reload"
-          sx={{ margin: theme.spacing(1) }}
+          sx={{ marginInline: theme.spacing(1), marginTop: theme.spacing(1), height: 56 }}
         >
           <ReplayRoundedIcon fontSize="large" />
         </Button>
@@ -124,35 +120,32 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
           autoComplete
           multiple
           id="tags-outlined"
-          options={currencyCodesWithoutBase}
+          options={store.currencyCodes}
+          value={store.filter}
           filterSelectedOptions
           classes={{
-            listbox: `${currencyStore.isDarkMode ? "dark" : "light"}-scrollbar`,
+            listbox: `${store.isDarkMode ? "dark" : "light"}-scrollbar`,
           }}
           sx={{ width: "100%", margin: theme.spacing(1) }}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Currencies to convert to"
+              label={l[store.lang].filter}
               color="error"
             />
           )}
           onChange={(_, value) => {
-            setFilter(value);
-            currencyStore.setCurrencyFilter(
-              value.length ? value : currencyCodesWithoutBase
-            );
+            store.setFilter(value);
+            localStorage.setItem('currencies', JSON.stringify(value));
           }}
         />
 
         <Button
           color="secondary"
           variant="contained"
-          onClick={() => {
-            filter.length && currencyStore.setCurrencyFilter(filter);
-          }}
+          onClick={() => store.setShowFiltered(false)}
           title="Apply Filter"
-          sx={{ margin: theme.spacing(1) }}
+          sx={{ marginInline: theme.spacing(1), marginTop: theme.spacing(1), height: 56 }}
         >
           <DoneRoundedIcon fontSize="large" />
         </Button>
@@ -160,9 +153,9 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => currencyStore.setCurrencyFilter(currencyCodes)}
+          onClick={() => store.setShowFiltered(true)}
           title="Clear Filter"
-          sx={{ margin: theme.spacing(1) }}
+          sx={{ marginInline: theme.spacing(1), marginTop: theme.spacing(1), height: 56 }}
         >
           <ClearAllRoundedIcon fontSize="large" />
         </Button>
@@ -170,5 +163,3 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
     </div>
   );
 });
-
-export default InputPanel;
