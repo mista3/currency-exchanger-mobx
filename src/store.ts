@@ -19,9 +19,11 @@ class Store {
       const storedBase = localStorage.getItem('base');
       const storedAmount = localStorage.getItem('amount');
       const storedFilter = localStorage.getItem('filter');
+      const storedLang = localStorage.getItem('lang');
       if (storedBase) this._base = storedBase;
       if (storedAmount) this._amountInput = storedAmount;
       if (storedFilter) this._filter = JSON.parse(storedFilter);
+      if (storedLang) this._lang = storedLang as Language;
       this.fetchCurrencies();
     });
     reaction(
@@ -32,6 +34,7 @@ class Store {
 
   setBase(value: string) {
     this._base = value;
+    localStorage.setItem('base', value);
   }
   get base(){
     return this._base;
@@ -47,6 +50,7 @@ class Store {
       return;
     }
     this._amountInput = `${value}`;
+    localStorage.setItem('amount', this._amountInput);
   }
   get amountInput() {
     return this._amountInput;
@@ -64,6 +68,7 @@ class Store {
   }
   setFilter(value: string[]) {
     this._filter = value;
+    localStorage.setItem('currencies', JSON.stringify(value));
     if (value.length) {
       this.setShowFiltered(true);
     } else {
@@ -128,6 +133,7 @@ class Store {
 
   toggleLanguage() {
     this._lang = this._lang === 'EN' ? 'RU' : 'EN';
+    localStorage.setItem('lang', this._lang);
   }
   get lang() {
     return this._lang;

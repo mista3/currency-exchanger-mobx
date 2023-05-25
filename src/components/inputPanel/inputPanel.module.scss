@@ -16,24 +16,26 @@
         font-family: Cubano, monospace;
         text-transform: uppercase;
         transition: font-size 300ms ease-in-out;
+        display: block;
+        width: max-content;
       }
     }
 
-    @media screen and (max-width: 825px) {
+    @media screen and (max-width: 1250px) {
       .button_label {
         h1 {
-          font-size: 25px;
+          display: none;
         }
       }
     }
 
-    @media screen and (max-width: 400px) {
-      .button_label {
-        h1 {
-          font-size: 0px;
-        }
-      }
-    }
+    // @media screen and (max-width: 400px) {
+    //   .button_label {
+    //     h1 {
+    //       font-size: 0px;
+    //     }
+    //   }
+    // }
   }
 
   .second {

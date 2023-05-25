@@ -38,6 +38,15 @@ export const InputPanel = observer(({ theme }: { theme: Theme }) => {
               <DarkModeRoundedIcon fontSize="large" />
             )}
           </Button>
+          <Button
+            title="Switch Theme"
+            onClick={() => store.toggleLanguage()}
+            color="secondary"
+            variant="contained"
+            sx={{ margin: theme.spacing(1), height: 56 }}
+          >
+            {store.lang}
+          </Button>
 
           <h1>Currency Exchanger</h1>
         </Stack>
@@ -45,10 +54,7 @@ export const InputPanel = observer(({ theme }: { theme: Theme }) => {
         <Stack direction="row">
           <Autocomplete
             value={store.base}
-            onChange={(_, value) => {
-              store.setBase(value);
-              localStorage.setItem('base', value);
-            }}
+            onChange={(_, value) => store.setBase(value)}
             autoComplete
             disableClearable
             disablePortal
@@ -87,21 +93,9 @@ export const InputPanel = observer(({ theme }: { theme: Theme }) => {
             InputProps={{
               inputProps: { min: 0 },
             }}
-            onChange={(e) => {
-              store.setAmountInput(e.target.value)
-              localStorage.setItem('amount', e.target.value);
-            }}
+            onChange={(e) => store.setAmountInput(e.target.value)}
             sx={{ margin: theme.spacing(1), minWidth: "100px" }}
           />
-          <Button
-            title="Switch Theme"
-            onClick={() => store.toggleLanguage()}
-            color="secondary"
-            variant="contained"
-            sx={{ margin: theme.spacing(1), height: 56 }}
-          >
-            {store.lang}
-          </Button>
         </Stack>
       </Stack>
 
@@ -134,10 +128,7 @@ export const InputPanel = observer(({ theme }: { theme: Theme }) => {
               color="error"
             />
           )}
-          onChange={(_, value) => {
-            store.setFilter(value);
-            localStorage.setItem('currencies', JSON.stringify(value));
-          }}
+          onChange={(_, value) => store.setFilter(value)}
         />
 
         <Button
