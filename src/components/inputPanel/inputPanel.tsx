@@ -134,7 +134,7 @@ export const InputPanel = observer(({ theme }: { theme: Theme }) => {
         <Button
           color="secondary"
           variant="contained"
-          onClick={() => store.setShowFiltered(false)}
+          onClick={() => store.setShowFiltered(true)}
           title="Apply Filter"
           sx={{ marginInline: theme.spacing(1), marginTop: theme.spacing(1), height: 56 }}
         >
@@ -144,7 +144,7 @@ export const InputPanel = observer(({ theme }: { theme: Theme }) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => store.setShowFiltered(true)}
+          onClick={() => store.setShowFiltered(false)}
           title="Clear Filter"
           sx={{ marginInline: theme.spacing(1), marginTop: theme.spacing(1), height: 56 }}
         >

@@ -77,9 +77,9 @@ class Store {
   }
 
   async fetchCurrencies() {
-    if (import.meta.env.VITE_MOCK) { 
+    // if (import.meta.env.VITE_MOCK) { 
+    if (false) { 
       this._exchanged = mock;
-      console.log('fetch');
       this._status = "done";
     } else {
       this._exchanged = [];
