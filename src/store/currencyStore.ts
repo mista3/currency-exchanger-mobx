@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import ky from "ky";
+import { getRatesMock } from "../helper";
 
 class CurrencyStore {
   amount = 1;
@@ -37,9 +37,7 @@ class CurrencyStore {
     this.exchangedCurrencies = [];
     this.status = "pending";
     try {
-      const res = await ky.get(`${import.meta.env.PROD?'mistominapi.ru':'http://localhost:3001'}/currencyexchanger/currencies?base=${baseCode}`)      
-      const json = await res.json<{ code: string, value: number }[]>();
-      this.exchangedCurrencies = json;
+      this.exchangedCurrencies = await getRatesMock(baseCode);
       this.status = "done";
     } catch {
       this.status = "error";

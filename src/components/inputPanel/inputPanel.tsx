@@ -1,5 +1,5 @@
 import "./inputPanel.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import currencyCodes from "../../data/currencyCodes.json";
 import { Autocomplete, TextField, Stack, Button } from "@mui/material";
 import { Theme } from "@mui/material/styles";
@@ -13,17 +13,13 @@ import { currencyStore } from "../../store/currencyStore";
 import { observer } from "mobx-react-lite";
 
 const InputPanel = observer(({ theme }: { theme: Theme }) => {
-  const [baseCurrency, setBaseCurrency] = useState(() => {
-    return "USD";
-  });
+  const [baseCurrency, setBaseCurrency] = useState("USD");
 
-  const [filter, setFilter] = useState(() => {
-    return Array<string>();
-  });
+  const [filter, setFilter] = useState<string[]>([]);
 
-  const currencyCodesWithoutBase = currencyCodes.filter((code) => {
-    return code != baseCurrency;
-  });
+  const currencyCodesWithoutBase = useMemo(() => {
+    return currencyCodes.filter((code) => code !== baseCurrency);
+  }, [baseCurrency]);
 
   useEffect(() => {
     currencyStore.fetchCurrencies(baseCurrency);
@@ -67,7 +63,7 @@ const InputPanel = observer(({ theme }: { theme: Theme }) => {
             autoComplete
             disableClearable
             disablePortal
-            defaultValue={baseCurrency}
+            value={baseCurrency}
             id="combo-box-demo"
             options={currencyCodes}
             classes={{
